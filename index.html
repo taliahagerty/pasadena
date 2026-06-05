@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pasadena</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(135deg, #1a0530, #2d1b69, #0d2b4a);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #ff9de2;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px #ff9de2, 0 0 40px #c77dff;
+      animation: titlePulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes titlePulse {
+      from { text-shadow: 0 0 10px #ff9de2, 0 0 20px #c77dff; }
+      to   { text-shadow: 0 0 30px #ff9de2, 0 0 60px #c77dff; }
+    }
+
+    .stage {
+      position: relative;
+      width: 420px;
+      height: 480px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* ── Rainbow disco floor ── */
+    .floor {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+    }
+    .tile { animation: tileFlash 0.5s infinite; border: 1px solid #1a0530; }
+    .tile:nth-child(1) { background: #ff6eb4; animation-delay: 0.0s; }
+    .tile:nth-child(2) { background: #ff9de2; animation-delay: 0.1s; }
+    .tile:nth-child(3) { background: #c77dff; animation-delay: 0.2s; }
+    .tile:nth-child(4) { background: #7eb8f7; animation-delay: 0.3s; }
+    .tile:nth-child(5) { background: #7ed321; animation-delay: 0.0s; }
+    .tile:nth-child(6) { background: #ffd700; animation-delay: 0.1s; }
+    .tile:nth-child(7) { background: #ff6eb4; animation-delay: 0.2s; }
+    .tile:nth-child(8) { background: #c77dff; animation-delay: 0.3s; }
+    @keyframes tileFlash {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ── Sparkles ── */
+    .sparkles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .spark { position: absolute; width: 10px; height: 10px; border-radius: 50%; animation: sparkFloat 2s infinite ease-in-out; }
+    .spark:nth-child(1) { background: #ff6eb4; left: 10%; top: 20%; animation-delay: 0.0s; }
+    .spark:nth-child(2) { background: #ffd700; left: 25%; top: 10%; animation-delay: 0.3s; }
+    .spark:nth-child(3) { background: #c77dff; left: 50%; top:  5%; animation-delay: 0.6s; }
+    .spark:nth-child(4) { background: #7eb8f7; left: 75%; top: 10%; animation-delay: 0.9s; }
+    .spark:nth-child(5) { background: #ff9de2; left: 90%; top: 20%; animation-delay: 1.2s; }
+    .spark:nth-child(6) { background: #7ed321; left: 15%; top: 40%; animation-delay: 0.5s; }
+    .spark:nth-child(7) { background: #ffd700; left: 85%; top: 40%; animation-delay: 0.8s; }
+    @keyframes sparkFloat {
+      0%   { transform: translateY(0) scale(1) rotate(0deg);   opacity: 1; }
+      50%  { transform: translateY(-25px) scale(1.5) rotate(180deg); opacity: 0.6; }
+      100% { transform: translateY(0) scale(1) rotate(360deg); opacity: 1; }
+    }
+
+    /* ── Unicorn wrapper ── */
+    .unicorn {
+      position: relative;
+      bottom: 60px;
+      animation: dance 0.5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px #c77dff);
+    }
+    @keyframes dance {
+      from { transform: translateY(0) rotate(-3deg); }
+      to   { transform: translateY(-18px) rotate(3deg); }
+    }
+
+    /* ── Head ── */
+    .head {
+      width: 90px; height: 80px;
+      background: linear-gradient(135deg, #fff0fa, #f0e6ff);
+      border-radius: 20px;
+      margin: 0 auto;
+      position: relative;
+      border: 3px solid #ffd700;
+      animation: headBob 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes headBob {
+      from { transform: rotate(4deg); }
+      to   { transform: rotate(-4deg); }
+    }
+
+    /* Horn */
+    .horn {
+      position: absolute;
+      top: -36px; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-bottom: 34px solid #ffd700;
+      animation: hornGlow 0.8s ease-in-out infinite alternate;
+    }
+    .horn::after {
+      content: '';
+      position: absolute;
+      top: 5px; left: -5px;
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 20px solid #ffe44d;
+    }
+    @keyframes hornGlow {
+      from { filter: drop-shadow(0 0 4px #ffd700); }
+      to   { filter: drop-shadow(0 0 14px #ffe44d); }
+    }
+
+    /* Mane */
+    .mane {
+      position: absolute;
+      right: -16px; top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mane-strip {
+      height: 9px;
+      border-radius: 0 5px 5px 0;
+      animation: maneWave 0.5s ease-in-out infinite alternate;
+    }
+    .mane-strip:nth-child(1) { width: 20px; background: #ff6eb4; animation-delay: 0.0s; }
+    .mane-strip:nth-child(2) { width: 16px; background: #ff9de2; animation-delay: 0.1s; }
+    .mane-strip:nth-child(3) { width: 22px; background: #c77dff; animation-delay: 0.2s; }
+    .mane-strip:nth-child(4) { width: 14px; background: #7eb8f7; animation-delay: 0.3s; }
+    .mane-strip:nth-child(5) { width: 18px; background: #ffd700; animation-delay: 0.4s; }
+    @keyframes maneWave {
+      from { transform: scaleX(1); }
+      to   { transform: scaleX(1.35); }
+    }
+
+    /* Eyes */
+    .eyes { display: flex; justify-content: space-around; padding: 20px 14px 0; }
+    .eye {
+      width: 22px; height: 22px;
+      background: radial-gradient(circle at 35% 35%, #fff, #c77dff);
+      border-radius: 50%;
+      box-shadow: 0 0 8px #c77dff;
+      animation: eyeBlink 2.5s infinite;
+      position: relative;
+    }
+    .eye::after {
+      content: '\2605';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10px;
+      color: #7b2d8b;
+    }
+    @keyframes eyeBlink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95%            { transform: scaleY(0.1); }
+    }
+
+    /* Mouth */
+    .mouth {
+      width: 40px; height: 10px;
+      border: 3px solid #ff9de2;
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      margin: 6px auto 0;
+      box-shadow: 0 0 6px #ff9de2;
+    }
+
+    /* ── Torso ── */
+    .torso {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    /* ── Body ── */
+    .body {
+      width: 100px; height: 90px;
+      background: linear-gradient(135deg, #fff0fa, #f0e6ff, #e6f0ff);
+      border-radius: 12px;
+      border: 3px solid #c77dff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .chest-light {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: conic-gradient(#ff6eb4, #ffd700, #7ed321, #7eb8f7, #c77dff, #ff6eb4);
+      animation: rainbowSpin 1s linear infinite, chestPulse 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes rainbowSpin { to { transform: rotate(360deg); } }
+    @keyframes chestPulse {
+      from { transform: scale(1)   rotate(0deg);   box-shadow: 0 0 8px  #c77dff; }
+      to   { transform: scale(1.3) rotate(360deg); box-shadow: 0 0 20px #ff9de2; }
+    }
+    .vents { position: absolute; bottom: 8px; display: flex; gap: 5px; }
+    .vent { width: 14px; height: 5px; border-radius: 3px; opacity: 0.7; }
+    .vent:nth-child(1) { background: #ff6eb4; }
+    .vent:nth-child(2) { background: #c77dff; }
+    .vent:nth-child(3) { background: #7eb8f7; }
+
+    /* ── Arms ── */
+    .arm {
+      width: 20px; height: 75px;
+      background: linear-gradient(180deg, #f0e6ff, #d4b8ff);
+      border-radius: 10px;
+      border: 2px solid #c77dff;
+      position: relative;
+    }
+    .arm.left  { animation: armLeft  0.5s ease-in-out infinite alternate; transform-origin: top center; }
+    .arm.right { animation: armRight 0.5s ease-in-out infinite alternate; transform-origin: top center; }
+    @keyframes armLeft  { from { transform: rotate(-40deg); } to { transform: rotate(20deg);  } }
+    @keyframes armRight { from { transform: rotate(40deg);  } to { transform: rotate(-20deg); } }
+    .hand {
+      width: 22px; height: 14px;
+      background: linear-gradient(90deg, #ffd700, #ffe44d);
+      border-radius: 7px;
+      position: absolute;
+      bottom: -8px; left: 50%; transform: translateX(-50%);
+      border: 2px solid #c77dff;
+    }
+
+    /* ── Tail ── */
+    .tail-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-self: flex-end;
+      margin-bottom: 6px;
+    }
+    .tail-strip {
+      height: 8px;
+      border-radius: 0 5px 5px 0;
+      animation: tailWave 0.5s ease-in-out infinite alternate;
+    }
+    .tail-strip:nth-child(1) { width: 22px; background: #ff6eb4; animation-delay: 0.0s; }
+    .tail-strip:nth-child(2) { width: 28px; background: #ffd700; animation-delay: 0.1s; }
+    .tail-strip:nth-child(3) { width: 18px; background: #c77dff; animation-delay: 0.2s; }
+    .tail-strip:nth-child(4) { width: 24px; background: #7eb8f7; animation-delay: 0.3s; }
+    .tail-strip:nth-child(5) { width: 20px; background: #7ed321; animation-delay: 0.4s; }
+    @keyframes tailWave {
+      from { transform: scaleX(1)   translateX(0px); }
+      to   { transform: scaleX(1.4) translateX(4px); }
+    }
+
+    /* ── Legs ── */
+    .legs { display: flex; justify-content: center; gap: 14px; margin-top: 4px; }
+    .leg {
+      width: 22px; height: 65px;
+      background: linear-gradient(180deg, #f0e6ff, #d4b8ff);
+      border-radius: 11px;
+      border: 2px solid #c77dff;
+      position: relative;
+    }
+    .leg.left  { animation: legLeft  0.5s ease-in-out infinite alternate; transform-origin: top center; }
+    .leg.right { animation: legRight 0.5s ease-in-out infinite alternate; transform-origin: top center; }
+    @keyframes legLeft  { from { transform: rotate(15deg);  } to { transform: rotate(-15deg); } }
+    @keyframes legRight { from { transform: rotate(-15deg); } to { transform: rotate(15deg);  } }
+    .foot {
+      width: 30px; height: 14px;
+      background: linear-gradient(90deg, #ffd700, #ffe44d);
+      border-radius: 6px 6px 8px 8px;
+      position: absolute;
+      bottom: -10px; left: 50%; transform: translateX(-50%);
+      border: 2px solid #c77dff;
+    }
+
+    /* ── Floating stars ── */
+    .notes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .note { position: absolute; font-size: 1.4rem; animation: noteFloat 1.5s infinite ease-in; opacity: 0; }
+    .note:nth-child(1) { left:  5%; color: #ff6eb4; animation-delay: 0.0s; }
+    .note:nth-child(2) { left: 88%; color: #ffd700; animation-delay: 0.5s; }
+    .note:nth-child(3) { left: 45%; color: #c77dff; animation-delay: 1.0s; }
+    .note:nth-child(4) { left: 70%; color: #7eb8f7; animation-delay: 0.3s; }
+    .note:nth-child(5) { left: 20%; color: #ff9de2; animation-delay: 0.8s; }
+    @keyframes noteFloat {
+      0%   { transform: translateY(320px) rotate(0deg);  opacity: 0; }
+      20%  { opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(-20px) rotate(20deg); opacity: 0; }
+    }
+
+    .message {
+      color: #ff9de2;
+      font-size: 1.1rem;
+      margin-top: 18px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #c77dff;
+      animation: msgPulse 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes msgPulse { from { opacity: 0.6; } to { opacity: 1; } }
+
+    .spotify {
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 24px #c77dffaa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pasadena</h1>
+
+  <div class="stage">
+    <div class="sparkles">
+      <div class="spark"></div><div class="spark"></div><div class="spark"></div>
+      <div class="spark"></div><div class="spark"></div><div class="spark"></div>
+      <div class="spark"></div>
+    </div>
+
+    <div class="notes">
+      <div class="note">&#9733;</div>
+      <div class="note">&#9829;</div>
+      <div class="note">&#10022;</div>
+      <div class="note">&#9733;</div>
+      <div class="note">&#10022;</div>
+    </div>
+
+    <div class="unicorn">
+      <!-- Head -->
+      <div class="head">
+        <div class="horn"></div>
+        <div class="mane">
+          <div class="mane-strip"></div>
+          <div class="mane-strip"></div>
+          <div class="mane-strip"></div>
+          <div class="mane-strip"></div>
+          <div class="mane-strip"></div>
+        </div>
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="mouth"></div>
+      </div>
+
+      <!-- Torso: left arm, body, right arm, tail -->
+      <div class="torso">
+        <div class="arm left"><div class="hand"></div></div>
+        <div class="body">
+          <div class="chest-light"></div>
+          <div class="vents">
+            <div class="vent"></div><div class="vent"></div><div class="vent"></div>
+          </div>
+        </div>
+        <div class="arm right"><div class="hand"></div></div>
+        <div class="tail-wrap">
+          <div class="tail-strip"></div>
+          <div class="tail-strip"></div>
+          <div class="tail-strip"></div>
+          <div class="tail-strip"></div>
+          <div class="tail-strip"></div>
+        </div>
+      </div>
+
+      <!-- Legs -->
+      <div class="legs">
+        <div class="leg left"><div class="foot"></div></div>
+        <div class="leg right"><div class="foot"></div></div>
+      </div>
+    </div>
+
+    <div class="floor">
+      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile"></div>
+    </div>
+  </div>
+
+  <p class="message">&#10024; Welcome to Pasadena &#10024;</p>
+  <iframe class="spotify"
+    src="https://open.spotify.com/embed/track/39LLxExYz6ewLAcYrzQQyP?utm_source=generator&theme=0"
+    width="340" height="80"
+    frameborder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy">
+  </iframe>
+
+</body>
+</html>
