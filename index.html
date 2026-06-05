@@ -7,7 +7,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: linear-gradient(135deg, #1a0530, #2d1b69, #0d2b4a);
+      background: linear-gradient(180deg, #0d0830 0%, #1a0f5c 50%, #2d1b8a 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -17,10 +17,14 @@
       overflow: hidden;
     }
 
+    .stars { position: fixed; inset: 0; pointer-events: none; }
+    .star  { position: absolute; background: white; border-radius: 50%; animation: twinkle 2s infinite alternate; }
+    @keyframes twinkle { from { opacity: 0.15; } to { opacity: 1; } }
+
     h1 {
       color: #ff9de2;
       font-size: 2.5rem;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       text-shadow: 0 0 20px #ff9de2, 0 0 40px #c77dff;
       animation: titlePulse 1s ease-in-out infinite alternate;
     }
@@ -29,280 +33,260 @@
       to   { text-shadow: 0 0 30px #ff9de2, 0 0 60px #c77dff; }
     }
 
-    .stage {
+    /* ── Scene ── */
+    .scene {
       position: relative;
-      width: 420px;
-      height: 480px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    /* ── Rainbow disco floor ── */
-    .floor {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      border-radius: 0 0 12px 12px;
+      width: 620px; height: 300px;
+      border-radius: 16px;
       overflow: hidden;
     }
-    .tile { animation: tileFlash 0.5s infinite; border: 1px solid #1a0530; }
-    .tile:nth-child(1) { background: #ff6eb4; animation-delay: 0.0s; }
-    .tile:nth-child(2) { background: #ff9de2; animation-delay: 0.1s; }
-    .tile:nth-child(3) { background: #c77dff; animation-delay: 0.2s; }
-    .tile:nth-child(4) { background: #7eb8f7; animation-delay: 0.3s; }
-    .tile:nth-child(5) { background: #7ed321; animation-delay: 0.0s; }
-    .tile:nth-child(6) { background: #ffd700; animation-delay: 0.1s; }
-    .tile:nth-child(7) { background: #ff6eb4; animation-delay: 0.2s; }
-    .tile:nth-child(8) { background: #c77dff; animation-delay: 0.3s; }
-    @keyframes tileFlash {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
+
+    .sky {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, #080520 0%, #1a0f5c 55%, #3525a0 100%);
     }
 
-    /* ── Sparkles ── */
-    .sparkles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-    .spark { position: absolute; width: 10px; height: 10px; border-radius: 50%; animation: sparkFloat 2s infinite ease-in-out; }
-    .spark:nth-child(1) { background: #ff6eb4; left: 10%; top: 20%; animation-delay: 0.0s; }
-    .spark:nth-child(2) { background: #ffd700; left: 25%; top: 10%; animation-delay: 0.3s; }
-    .spark:nth-child(3) { background: #c77dff; left: 50%; top:  5%; animation-delay: 0.6s; }
-    .spark:nth-child(4) { background: #7eb8f7; left: 75%; top: 10%; animation-delay: 0.9s; }
-    .spark:nth-child(5) { background: #ff9de2; left: 90%; top: 20%; animation-delay: 1.2s; }
-    .spark:nth-child(6) { background: #7ed321; left: 15%; top: 40%; animation-delay: 0.5s; }
-    .spark:nth-child(7) { background: #ffd700; left: 85%; top: 40%; animation-delay: 0.8s; }
-    @keyframes sparkFloat {
-      0%   { transform: translateY(0) scale(1) rotate(0deg);   opacity: 1; }
-      50%  { transform: translateY(-25px) scale(1.5) rotate(180deg); opacity: 0.6; }
-      100% { transform: translateY(0) scale(1) rotate(360deg); opacity: 1; }
+    .rainbow {
+      position: absolute;
+      bottom: 48px; left: 50%;
+      transform: translateX(-50%);
+      width: 520px; height: 260px;
+      border-radius: 260px 260px 0 0;
+      border: 13px solid rgba(255,60,60,0.22);
+      box-shadow:
+        0 0 0 13px rgba(255,160,0,0.18),
+        0 0 0 26px rgba(255,240,0,0.18),
+        0 0 0 39px rgba(60,210,60,0.18),
+        0 0 0 52px rgba(60,100,255,0.18),
+        0 0 0 65px rgba(160,0,220,0.18);
     }
 
-    /* ── Unicorn wrapper ── */
-    .unicorn {
-      position: relative;
-      bottom: 60px;
-      animation: dance 0.5s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 20px #c77dff);
+    .ground {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 52px;
+      background: linear-gradient(180deg, #3a8a28, #1a4010);
     }
-    @keyframes dance {
-      from { transform: translateY(0) rotate(-3deg); }
-      to   { transform: translateY(-18px) rotate(3deg); }
+    .hill { position: absolute; bottom: 48px; border-radius: 50% 50% 0 0; }
+    .hill-1 { width: 340px; height: 105px; left: -60px;  background: linear-gradient(180deg, #2d7020, #1a4010); }
+    .hill-2 { width: 280px; height:  80px; right: -40px; background: linear-gradient(180deg, #3a8028, #1a4010); }
+    .hill-3 { width: 190px; height:  58px; left: 210px;  background: linear-gradient(180deg, #4a9030, #2a5018); }
+
+    /* Floating sparkles */
+    .floaters { position: absolute; inset: 0; pointer-events: none; }
+    .floater  { position: absolute; font-size: 1.1rem; animation: floatUp 2.5s infinite ease-in; opacity: 0; }
+    .floater:nth-child(1) { left: 7%;  animation-delay: 0.0s; color: #ff9de2; }
+    .floater:nth-child(2) { left: 90%; animation-delay: 0.9s; color: #ffd700; }
+    .floater:nth-child(3) { left: 52%; animation-delay: 1.8s; color: #c77dff; }
+    @keyframes floatUp {
+      0%   { transform: translateY(270px); opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translateY(30px);  opacity: 0; }
     }
 
-    /* ── Head ── */
-    .head {
-      width: 90px; height: 80px;
-      background: linear-gradient(135deg, #fff0fa, #f0e6ff);
-      border-radius: 20px;
-      margin: 0 auto;
-      position: relative;
-      border: 3px solid #ffd700;
-      animation: headBob 0.5s ease-in-out infinite alternate;
+    /* ───────── UNICORN ───────── */
+    .unicorn-wrap {
+      position: absolute;
+      bottom: 50px; left: 50%;
+      transform: translateX(-50%);
+      width: 320px; height: 210px;
+      animation: gallop 0.35s ease-in-out infinite alternate;
+      filter: drop-shadow(0 6px 18px rgba(199,125,255,0.45));
     }
-    @keyframes headBob {
-      from { transform: rotate(4deg); }
-      to   { transform: rotate(-4deg); }
+    @keyframes gallop {
+      from { transform: translateX(-50%) translateY(0); }
+      to   { transform: translateX(-50%) translateY(-11px); }
+    }
+
+    /* Hoof sparks */
+    .hoof-sparks .hs {
+      position: absolute;
+      border-radius: 50%;
+      animation: hoofSpark 0.65s ease-out infinite;
+    }
+    .hs:nth-child(1){ width:7px;height:7px; background:#ff9de2; bottom:0; left:84px;  animation-delay:0.00s; }
+    .hs:nth-child(2){ width:5px;height:5px; background:#ffd700; bottom:0; left:106px; animation-delay:0.18s; }
+    .hs:nth-child(3){ width:6px;height:6px; background:#c77dff; bottom:0; left:68px;  animation-delay:0.36s; }
+    @keyframes hoofSpark {
+      0%  { transform: translateY(0) scale(1); opacity: 1; }
+      100%{ transform: translateY(-28px) scale(0); opacity: 0; }
+    }
+
+    /* Rump (rear hump) */
+    .u-rump {
+      position: absolute;
+      width: 75px; height: 70px;
+      background: linear-gradient(150deg, #fef5ff, #ede0ff);
+      border-radius: 55% 40% 40% 55% / 55% 50% 40% 50%;
+      top: 68px; left: 44px;
+      border: 2px solid #dccff2;
+    }
+
+    /* Main body */
+    .u-body {
+      position: absolute;
+      width: 158px; height: 80px;
+      background: linear-gradient(155deg, #fefaff, #f2eaff);
+      border-radius: 52% 48% 46% 54% / 56% 56% 44% 44%;
+      top: 72px; left: 55px;
+      border: 2px solid #dccff2;
+      box-shadow: inset 0 3px 10px rgba(199,125,255,0.1);
+    }
+
+    /* Neck */
+    .u-neck {
+      position: absolute;
+      width: 40px; height: 66px;
+      background: linear-gradient(160deg, #fefaff, #f2eaff);
+      border-radius: 44% 44% 22% 22%;
+      top: 27px; left: 186px;
+      transform: rotate(-16deg);
+      border: 2px solid #dccff2;
+    }
+
+    /* Head */
+    .u-head {
+      position: absolute;
+      width: 74px; height: 52px;
+      background: linear-gradient(155deg, #fefaff, #f2eaff);
+      border-radius: 36% 58% 55% 36% / 50%;
+      top: 17px; left: 212px;
+      border: 2px solid #dccff2;
     }
 
     /* Horn */
-    .horn {
+    .u-horn {
       position: absolute;
-      top: -36px; left: 50%;
-      transform: translateX(-50%);
+      top: -33px; left: 45px;
       width: 0; height: 0;
-      border-left: 9px solid transparent;
-      border-right: 9px solid transparent;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
       border-bottom: 34px solid #ffd700;
-      animation: hornGlow 0.8s ease-in-out infinite alternate;
+      transform: rotate(20deg);
+      transform-origin: bottom center;
+      animation: hornGlow 0.9s ease-in-out infinite alternate;
     }
-    .horn::after {
+    .u-horn::after {
       content: '';
       position: absolute;
-      top: 5px; left: -5px;
+      top: 6px; left: -4px;
       width: 0; height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-bottom: 20px solid #ffe44d;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 22px solid #ffe44d;
     }
     @keyframes hornGlow {
-      from { filter: drop-shadow(0 0 4px #ffd700); }
-      to   { filter: drop-shadow(0 0 14px #ffe44d); }
+      from { filter: drop-shadow(0 0 4px rgba(255,215,0,0.8)); }
+      to   { filter: drop-shadow(0 0 14px rgba(255,235,80,1)); }
     }
 
-    /* Mane */
-    .mane {
+    /* Eye */
+    .u-eye {
       position: absolute;
-      right: -16px; top: 6px;
+      width: 14px; height: 14px;
+      background: #3a1260;
+      border-radius: 50%;
+      top: 13px; left: 44px;
+      box-shadow: 0 0 5px rgba(199,125,255,0.6);
+    }
+    .u-eye::after {
+      content: '';
+      position: absolute;
+      width: 5px; height: 5px;
+      background: white;
+      border-radius: 50%;
+      top: 2px; left: 2px;
+    }
+
+    /* Nostril */
+    .u-nostril {
+      position: absolute;
+      width: 6px; height: 5px;
+      background: rgba(200,160,230,0.55);
+      border-radius: 50%;
+      top: 31px; left: 60px;
+    }
+
+    /* Mane — right-aligned in container so strands flow LEFT from neck */
+    .u-mane {
+      position: absolute;
+      top: 18px; left: 126px;
+      width: 70px;
       display: flex;
       flex-direction: column;
+      align-items: flex-end;
       gap: 4px;
     }
-    .mane-strip {
+    .mane-s {
       height: 9px;
-      border-radius: 0 5px 5px 0;
-      animation: maneWave 0.5s ease-in-out infinite alternate;
+      border-radius: 5px 1px 1px 5px;
+      transform-origin: right center;
+      animation: maneFlow 0.35s ease-in-out infinite alternate;
     }
-    .mane-strip:nth-child(1) { width: 20px; background: #ff6eb4; animation-delay: 0.0s; }
-    .mane-strip:nth-child(2) { width: 16px; background: #ff9de2; animation-delay: 0.1s; }
-    .mane-strip:nth-child(3) { width: 22px; background: #c77dff; animation-delay: 0.2s; }
-    .mane-strip:nth-child(4) { width: 14px; background: #7eb8f7; animation-delay: 0.3s; }
-    .mane-strip:nth-child(5) { width: 18px; background: #ffd700; animation-delay: 0.4s; }
-    @keyframes maneWave {
-      from { transform: scaleX(1); }
-      to   { transform: scaleX(1.35); }
+    .mane-s:nth-child(1){ width:42px; background:#ff6eb4; animation-delay:0.00s; }
+    .mane-s:nth-child(2){ width:56px; background:#ff9c40; animation-delay:0.05s; }
+    .mane-s:nth-child(3){ width:36px; background:#ffd700; animation-delay:0.10s; }
+    .mane-s:nth-child(4){ width:62px; background:#7ed321; animation-delay:0.15s; }
+    .mane-s:nth-child(5){ width:46px; background:#7eb8f7; animation-delay:0.20s; }
+    .mane-s:nth-child(6){ width:52px; background:#c77dff; animation-delay:0.25s; }
+    @keyframes maneFlow {
+      from { transform: skewY(-2deg) translateX(0);   }
+      to   { transform: skewY(-9deg) translateX(-13px); }
     }
 
-    /* Eyes */
-    .eyes { display: flex; justify-content: space-around; padding: 20px 14px 0; }
-    .eye {
-      width: 22px; height: 22px;
-      background: radial-gradient(circle at 35% 35%, #fff, #c77dff);
-      border-radius: 50%;
-      box-shadow: 0 0 8px #c77dff;
-      animation: eyeBlink 2.5s infinite;
-      position: relative;
-    }
-    .eye::after {
-      content: '\2605';
+    /* Tail — right-aligned in container so strands flow LEFT from body rear */
+    .u-tail {
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 10px;
-      color: #7b2d8b;
-    }
-    @keyframes eyeBlink {
-      0%, 90%, 100% { transform: scaleY(1); }
-      95%            { transform: scaleY(0.1); }
-    }
-
-    /* Mouth */
-    .mouth {
-      width: 40px; height: 10px;
-      border: 3px solid #ff9de2;
-      border-top: none;
-      border-radius: 0 0 20px 20px;
-      margin: 6px auto 0;
-      box-shadow: 0 0 6px #ff9de2;
-    }
-
-    /* ── Torso ── */
-    .torso {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      margin-top: 6px;
-    }
-
-    /* ── Body ── */
-    .body {
-      width: 100px; height: 90px;
-      background: linear-gradient(135deg, #fff0fa, #f0e6ff, #e6f0ff);
-      border-radius: 12px;
-      border: 3px solid #c77dff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .chest-light {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: conic-gradient(#ff6eb4, #ffd700, #7ed321, #7eb8f7, #c77dff, #ff6eb4);
-      animation: rainbowSpin 1s linear infinite, chestPulse 0.5s ease-in-out infinite alternate;
-    }
-    @keyframes rainbowSpin { to { transform: rotate(360deg); } }
-    @keyframes chestPulse {
-      from { transform: scale(1)   rotate(0deg);   box-shadow: 0 0 8px  #c77dff; }
-      to   { transform: scale(1.3) rotate(360deg); box-shadow: 0 0 20px #ff9de2; }
-    }
-    .vents { position: absolute; bottom: 8px; display: flex; gap: 5px; }
-    .vent { width: 14px; height: 5px; border-radius: 3px; opacity: 0.7; }
-    .vent:nth-child(1) { background: #ff6eb4; }
-    .vent:nth-child(2) { background: #c77dff; }
-    .vent:nth-child(3) { background: #7eb8f7; }
-
-    /* ── Arms ── */
-    .arm {
-      width: 20px; height: 75px;
-      background: linear-gradient(180deg, #f0e6ff, #d4b8ff);
-      border-radius: 10px;
-      border: 2px solid #c77dff;
-      position: relative;
-    }
-    .arm.left  { animation: armLeft  0.5s ease-in-out infinite alternate; transform-origin: top center; }
-    .arm.right { animation: armRight 0.5s ease-in-out infinite alternate; transform-origin: top center; }
-    @keyframes armLeft  { from { transform: rotate(-40deg); } to { transform: rotate(20deg);  } }
-    @keyframes armRight { from { transform: rotate(40deg);  } to { transform: rotate(-20deg); } }
-    .hand {
-      width: 22px; height: 14px;
-      background: linear-gradient(90deg, #ffd700, #ffe44d);
-      border-radius: 7px;
-      position: absolute;
-      bottom: -8px; left: 50%; transform: translateX(-50%);
-      border: 2px solid #c77dff;
-    }
-
-    /* ── Tail ── */
-    .tail-wrap {
+      top: 80px; left: 0;
+      width: 62px;
       display: flex;
       flex-direction: column;
+      align-items: flex-end;
       gap: 3px;
-      align-self: flex-end;
-      margin-bottom: 6px;
     }
-    .tail-strip {
-      height: 8px;
-      border-radius: 0 5px 5px 0;
-      animation: tailWave 0.5s ease-in-out infinite alternate;
+    .tail-s {
+      height: 9px;
+      border-radius: 5px 1px 1px 5px;
+      transform-origin: right center;
+      animation: tailFlow 0.35s ease-in-out infinite alternate;
     }
-    .tail-strip:nth-child(1) { width: 22px; background: #ff6eb4; animation-delay: 0.0s; }
-    .tail-strip:nth-child(2) { width: 28px; background: #ffd700; animation-delay: 0.1s; }
-    .tail-strip:nth-child(3) { width: 18px; background: #c77dff; animation-delay: 0.2s; }
-    .tail-strip:nth-child(4) { width: 24px; background: #7eb8f7; animation-delay: 0.3s; }
-    .tail-strip:nth-child(5) { width: 20px; background: #7ed321; animation-delay: 0.4s; }
-    @keyframes tailWave {
-      from { transform: scaleX(1)   translateX(0px); }
-      to   { transform: scaleX(1.4) translateX(4px); }
+    .tail-s:nth-child(1){ width:44px; background:#c77dff; animation-delay:0.00s; }
+    .tail-s:nth-child(2){ width:60px; background:#7eb8f7; animation-delay:0.05s; }
+    .tail-s:nth-child(3){ width:38px; background:#7ed321; animation-delay:0.10s; }
+    .tail-s:nth-child(4){ width:54px; background:#ffd700; animation-delay:0.15s; }
+    .tail-s:nth-child(5){ width:48px; background:#ff9c40; animation-delay:0.20s; }
+    .tail-s:nth-child(6){ width:56px; background:#ff6eb4; animation-delay:0.25s; }
+    @keyframes tailFlow {
+      from { transform: rotate(-6deg)  translateX(0);   }
+      to   { transform: rotate(-20deg) translateX(-14px); }
     }
 
-    /* ── Legs ── */
-    .legs { display: flex; justify-content: center; gap: 14px; margin-top: 4px; }
-    .leg {
-      width: 22px; height: 65px;
-      background: linear-gradient(180deg, #f0e6ff, #d4b8ff);
-      border-radius: 11px;
-      border: 2px solid #c77dff;
-      position: relative;
-    }
-    .leg.left  { animation: legLeft  0.5s ease-in-out infinite alternate; transform-origin: top center; }
-    .leg.right { animation: legRight 0.5s ease-in-out infinite alternate; transform-origin: top center; }
-    @keyframes legLeft  { from { transform: rotate(15deg);  } to { transform: rotate(-15deg); } }
-    @keyframes legRight { from { transform: rotate(-15deg); } to { transform: rotate(15deg);  } }
-    .foot {
-      width: 30px; height: 14px;
-      background: linear-gradient(90deg, #ffd700, #ffe44d);
-      border-radius: 6px 6px 8px 8px;
+    /* Legs */
+    .u-leg {
       position: absolute;
-      bottom: -10px; left: 50%; transform: translateX(-50%);
-      border: 2px solid #c77dff;
+      width: 17px; height: 55px;
+      background: linear-gradient(180deg, #f0e8ff, #ddd0f5);
+      border-radius: 8px 8px 3px 3px;
+      border: 2px solid #dccff2;
+      transform-origin: top center;
     }
-
-    /* ── Floating stars ── */
-    .notes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-    .note { position: absolute; font-size: 1.4rem; animation: noteFloat 1.5s infinite ease-in; opacity: 0; }
-    .note:nth-child(1) { left:  5%; color: #ff6eb4; animation-delay: 0.0s; }
-    .note:nth-child(2) { left: 88%; color: #ffd700; animation-delay: 0.5s; }
-    .note:nth-child(3) { left: 45%; color: #c77dff; animation-delay: 1.0s; }
-    .note:nth-child(4) { left: 70%; color: #7eb8f7; animation-delay: 0.3s; }
-    .note:nth-child(5) { left: 20%; color: #ff9de2; animation-delay: 0.8s; }
-    @keyframes noteFloat {
-      0%   { transform: translateY(320px) rotate(0deg);  opacity: 0; }
-      20%  { opacity: 1; }
-      80%  { opacity: 1; }
-      100% { transform: translateY(-20px) rotate(20deg); opacity: 0; }
+    .u-leg::after {
+      content: '';
+      position: absolute;
+      bottom: -6px; left: 50%; transform: translateX(-50%);
+      width: 22px; height: 11px;
+      background: #b8a0e0;
+      border-radius: 4px 4px 7px 7px;
     }
+    .leg-bl { top: 144px; left: 80px;  animation: legA 0.35s ease-in-out infinite alternate; }
+    .leg-br { top: 144px; left: 100px; animation: legB 0.35s ease-in-out infinite alternate; }
+    .leg-fl { top: 144px; left: 167px; animation: legB 0.35s ease-in-out infinite alternate; }
+    .leg-fr { top: 144px; left: 187px; animation: legA 0.35s ease-in-out infinite alternate; }
+    @keyframes legA { from { transform: rotate(-30deg); } to { transform: rotate(25deg);  } }
+    @keyframes legB { from { transform: rotate(25deg);  } to { transform: rotate(-30deg); } }
 
+    /* ── Message & player ── */
     .message {
       color: #ff9de2;
       font-size: 1.1rem;
@@ -323,71 +307,59 @@
 </head>
 <body>
 
+  <div class="stars" id="stars"></div>
+
   <h1>Pasadena</h1>
 
-  <div class="stage">
-    <div class="sparkles">
-      <div class="spark"></div><div class="spark"></div><div class="spark"></div>
-      <div class="spark"></div><div class="spark"></div><div class="spark"></div>
-      <div class="spark"></div>
-    </div>
+  <div class="scene">
+    <div class="sky"></div>
+    <div class="rainbow"></div>
 
-    <div class="notes">
-      <div class="note">&#9733;</div>
-      <div class="note">&#9829;</div>
-      <div class="note">&#10022;</div>
-      <div class="note">&#9733;</div>
-      <div class="note">&#10022;</div>
-    </div>
+    <!-- Ground and hills render first (behind unicorn) -->
+    <div class="ground"></div>
+    <div class="hill hill-1"></div>
+    <div class="hill hill-2"></div>
+    <div class="hill hill-3"></div>
 
-    <div class="unicorn">
-      <!-- Head -->
-      <div class="head">
-        <div class="horn"></div>
-        <div class="mane">
-          <div class="mane-strip"></div>
-          <div class="mane-strip"></div>
-          <div class="mane-strip"></div>
-          <div class="mane-strip"></div>
-          <div class="mane-strip"></div>
-        </div>
-        <div class="eyes">
-          <div class="eye"></div>
-          <div class="eye"></div>
-        </div>
-        <div class="mouth"></div>
+    <!-- Unicorn -->
+    <div class="unicorn-wrap">
+      <div class="hoof-sparks">
+        <div class="hs"></div><div class="hs"></div><div class="hs"></div>
       </div>
 
-      <!-- Torso: left arm, body, right arm, tail -->
-      <div class="torso">
-        <div class="arm left"><div class="hand"></div></div>
-        <div class="body">
-          <div class="chest-light"></div>
-          <div class="vents">
-            <div class="vent"></div><div class="vent"></div><div class="vent"></div>
-          </div>
-        </div>
-        <div class="arm right"><div class="hand"></div></div>
-        <div class="tail-wrap">
-          <div class="tail-strip"></div>
-          <div class="tail-strip"></div>
-          <div class="tail-strip"></div>
-          <div class="tail-strip"></div>
-          <div class="tail-strip"></div>
-        </div>
+      <!-- Render order matters for z-layering -->
+      <div class="u-leg leg-bl"></div>
+      <div class="u-leg leg-br"></div>
+
+      <div class="u-tail">
+        <div class="tail-s"></div><div class="tail-s"></div><div class="tail-s"></div>
+        <div class="tail-s"></div><div class="tail-s"></div><div class="tail-s"></div>
       </div>
 
-      <!-- Legs -->
-      <div class="legs">
-        <div class="leg left"><div class="foot"></div></div>
-        <div class="leg right"><div class="foot"></div></div>
+      <div class="u-rump"></div>
+      <div class="u-body"></div>
+      <div class="u-neck"></div>
+
+      <div class="u-mane">
+        <div class="mane-s"></div><div class="mane-s"></div><div class="mane-s"></div>
+        <div class="mane-s"></div><div class="mane-s"></div><div class="mane-s"></div>
       </div>
+
+      <div class="u-head">
+        <div class="u-horn"></div>
+        <div class="u-eye"></div>
+        <div class="u-nostril"></div>
+      </div>
+
+      <div class="u-leg leg-fl"></div>
+      <div class="u-leg leg-fr"></div>
     </div>
 
-    <div class="floor">
-      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-      <div class="tile"></div><div class="tile"></div>
+    <!-- Floaters on top of everything -->
+    <div class="floaters">
+      <div class="floater">&#9733;</div>
+      <div class="floater">&#9829;</div>
+      <div class="floater">&#10022;</div>
     </div>
   </div>
 
@@ -399,6 +371,17 @@
     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
     loading="lazy">
   </iframe>
+
+  <script>
+    const el = document.getElementById('stars');
+    for (let i = 0; i < 65; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const z = Math.random() * 3 + 1;
+      s.style.cssText = `width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*75}%;animation-delay:${Math.random()*2}s;animation-duration:${1+Math.random()*2}s;`;
+      el.appendChild(s);
+    }
+  </script>
 
 </body>
 </html>
